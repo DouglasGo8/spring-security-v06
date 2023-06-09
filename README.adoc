@@ -1,0 +1,176 @@
+= Spring Security along with JWT, OAUTH2,
+
+== Links
+
+- https://github.com/eazybytes/springsecurity6[Spring Security Training GitHub]
+
+- https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.security[Common Security Application Properties]
+
+== Important Notes
+
+. What is a security: Security is for *_protecting your data and business logic_*  inside your applications
+
+. Security is a NoN FuN ReQ: Security is a similar to scalability, performance and availability, no client will specifically ask that "Hey I need security"
+
+. Security from DEV phase: Security *_should_* be considered right from development phase itself along with business logic
+
+. Kinds of Security: For web apps we can implement security in different ways such as HTTPS, SSL, Authentication, Authorization etc
+
+. So why security is important: Security doesn't mean only loosing data or money by also image and brand and course trust from your users, which you have built over years
+
+. Avoid Common attacks: With security, we should also avoid most common security attacks like CSRF, Broken Authentication inside our app
+
+. Spring Security supports various standards of security to implement authentication, like using username/password authentication, JWT tokens, OAuth2, OpenID etc
+
+.Spring Security Internal Flow
+image::thumbs/spring_security_internal_flow.png[]
+
+* Each filter has your own responsibility and feature
+
+* Spring Security Filters: are a series of filters that intercept each request & work together to identify if Authentication is required or not.
+If authentication is required, accordingly navigate the user to a login (default) page or use the existing details stored during initial authentication
+
+* Authentication: are filters like _UsernamePasswordAuthenticationFilter_ will extract username/password from HTTP request & prepare _an Authentication_ type object, _Because Authentication_ is core standard of storing authenticated user details inside _Spring Security framework_
+
+* AuthenticationManager: Once received request from filter, it delegates the validating of the user details to the authentication providers available.
+Since there can be multiple providers inside app, it is the responsibility of the AuthenticationManager to manage all the authentication providers available
+
+* AuthenticationProvider: AuthenticationProviders has all the core logic of validating u ser details for authentication
+
+* UserDetailsManager/UserDetailsService: helps in retrieving, creating, updating and deleting the User Details from the DB/storage systems.
+
+* PasswordEncoder: Service interface helps in encoding and hashing passwords.
+Otherwise, we way have to live with plan text password
+
+* SecurityContext: Once the request has been authenticated, the authentication will usually be stored in a thread-local SecurityContext managed by the SecurityContextHolder. this help during the upcoming requests from the same user
+
+.Spring Security Internal flow in steps in an authentication scenario
+[source,java]
+----
+
+// step.1
+class AuthorizationFilter extends GenericFilterBean {
+  // ....
+  void doFilter() {}
+}
+// step.2
+class DefaultLoginPageGeneratingFilter {}
+// step.3
+class UsernamePasswordAuthenticationToken extends AbstractAuthenticationToken {
+  void authenticate(){}
+}
+// step.4
+class ProviderManager {
+  void authenticate(){}
+}
+// step.5
+class DaoAuthenticationProvider extends AbstratUserDetailsAuthenticationProvider {}
+----
+
+*_JSESSIONID_* to ensure security per request stored in the same tampered op over cookie
+
+=== Commands over Resources
+
+[source,bash]
+----
+curl -v http://localhost:8080/greet -u "guest:welcome1"
+curl -v http://localhost:8080/myAccount -u "guest:welcome1"
+curl -v http://localhost:8080/myAccount -u "johndb@mail.com:12345"
+# With Base64 Encoded credentials
+curl -v http://localhost:8080/greet -H "Authorization: Basic Z3Vlc3Q6d2VsY29tZTE="
+----
+
+* By default, Spring Security, protects all the paths present inside the web application.
+This behavior is due to the code present inside the method _defaultSecurityFilterSecurityChain of class SpringBootWebSecurityConfiguration_
+
+.SpringBootWebSecurityConfiguration Sample
+[source,java]
+----
+class SpringBootWebSecurityConfiguration {
+  @Bean
+  @Order(SecurityProperties.BASIC_AUTH_ORDER)
+  SecurityFilterChain defaultSecurityFilterSecurityChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests().anyRequest().authenticated(); // all the paths must be authenticated by default
+    http.formLogin();
+    http.httpBasic();
+    return http.build();
+  }
+}
+----
+
+* Lambda DSL style will replace the traditional methods
+
+.UserDetailsService/Manager main Structure
+image::thumbs/userServiceDetailsInterfaceImpl.png[]
+
+.UserDetails
+[source,html]
+----
+getAuthorities()
+getPassword()
+getUsername()
+isAccountNonExpired()
+isAccountNonLocked()
+isCredentialsNonExpired()
+isEnabled()
+----
+
+.User class, the core implementation of UserDetails functionalities
+[source,java]
+----
+class User implements UserDetails, CredentialsContainer {}
+----
+
+.UserDetailsService Interface
+[source,html]
+----
+loadUserByUsername(String username)
+----
+
+.UserDetailsManager Interface
+[source,html]
+----
+createUser(UserDetails user){}
+updateUser(UserDetails user) {}
+deleteUser(String username) {}
+changePassword(String oldPwd, String newPwd) {}
+userExists(String username) {}
+----
+
+==== Authentication vs UserDetails
+
+* Authentication is a return type in all the scenarios where we are trying to determine of the authentication is successful or not.
+Like aside the _AuthenticationProvider & AuthenticationManager_;
+
+[source, html]
+----
+getName()
+getPrincipal()
+getAuthorities()
+getCredentials()
+getDetails()
+isAuthenticated()
+setAuthenticated()
+eraseCredentials()
+----
+
+* UserDetails is the return type in all the scenarios where we try to load the user info from a storage system.
+Like inside the _UserDetailsService & UserDetailsManager_;
+
+[source, html]
+----
+-
+UserDetailsManager
+-
+changePassword()
+createUser(UserDetails user)
+deleteUser(String username)
+updateUser(UserDetails user)
+loadUserByUserName(String username)
+updateUser()
+-
+InMemoryUserDetailsManager
+-
+...
+----
+
