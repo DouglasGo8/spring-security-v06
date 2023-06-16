@@ -12,7 +12,7 @@
 
   <properties>
     <java-version>17</java-version>
-    <spring-boot.version>3.0.6</spring-boot.version>
+    <spring-boot.version>3.1.0</spring-boot.version>
   </properties>
 
   <dependencyManagement>
@@ -68,6 +68,7 @@
   <modules>
     <module>app-service-s02v1</module>
     <module>app-service-s03v1</module>
+    <module>app-service-s04v1</module>
     <module>webapp-basic-concepts</module>
   </modules>
 

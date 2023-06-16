@@ -11,9 +11,9 @@
   </parent>
 
   <groupId>com.udemy.spring.security.service.session03</groupId>
-  <artifactId>app-service-s03v1</artifactId>
+  <artifactId>app-service-s04v1</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Spring Security along with JWT, OAUTH2 :: Zero to Master :: Service Session 03</name>
+  <name>Spring Security along with JWT, OAUTH2 :: Zero to Master :: Service Session 04</name>
 
   <dependencies>
 

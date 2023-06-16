@@ -78,6 +78,8 @@ curl -v http://localhost:8080/myAccount -u "guest:welcome1"
 curl -v http://localhost:8080/myAccount -u "johndb@mail.com:12345"
 # With Base64 Encoded credentials
 curl -v http://localhost:8080/greet -H "Authorization: Basic Z3Vlc3Q6d2VsY29tZTE="
+#
+curl -v http://localhost:8080/greet -H "Authorization: Basic am9obmRiQG1haWwuY29tOjEyMzQ1"
 ----
 
 * By default, Spring Security, protects all the paths present inside the web application.
@@ -142,7 +144,7 @@ userExists(String username) {}
 * Authentication is a return type in all the scenarios where we are trying to determine of the authentication is successful or not.
 Like aside the _AuthenticationProvider & AuthenticationManager_;
 
-[source, html]
+[source,html]
 ----
 getName()
 getPrincipal()
@@ -157,7 +159,7 @@ eraseCredentials()
 * UserDetails is the return type in all the scenarios where we try to load the user info from a storage system.
 Like inside the _UserDetailsService & UserDetailsManager_;
 
-[source, html]
+[source,html]
 ----
 -
 UserDetailsManager
@@ -172,5 +174,42 @@ updateUser()
 InMemoryUserDetailsManager
 -
 ...
+----
+
+=== Password Management
+
+* Encoding is defined as the process of just converting data from one form to another and *_has nothing to do with cryptography_*, it involves not secret and is completely reversible, never ever used encoded to protect data, and the most common usages of encoding are BASE64, ASCII, UNICODE https://www.base64encode.org/[Base Encode]
+
+* Encryption is defined as the process of transforming data in such a way that guarantees confidentiality; this requires the use of a secret which, in cryptographic terms is called as _key_, we can reverse the cipher data using decryption using the key https://bcrypt-generator.com/[Bcrypt-Generator]
+
+* Hashing is another data conversion to the hash value using hash functions, when data is hashed is non-convertible, one cannot determine the original data from a hash value generated, the match with arbitrary data can be verified whether this data matches based on input and output - https://emn178.github.io/online-tools/sha256.html[Hash sha256]
+
+[source, java]
+----
+// DaoAuthenticatorProvider.java
+// additionalAuthenticationChecks...PasswordEncoder
+interface PasswordEncoder {
+  String encode(CharSequence rawPassword);
+  boolean matches(CharSequence rawPassword, String encodedPassword);
+  default boolean upgradeEncoding(String encodedPassword) { return false; }
+}
+
+// not recommended to use in prod
+class NoOpPasswordEncoder implements PasswordEncoder{
+  // deal with passwords in plaintext
+}
+// not recommended to use in prod
+class StandardPasswordEncoder implements PasswordEncoder{
+  // just to support legacy apps
+}
+// not recommended to use in prod
+class Pbkdf2PasswordEncoder implements PasswordEncoder {
+  //
+}
+class BCryptPasswordEncoder implements PasswordEncoder{
+  //
+}
+class SCryptPasswordEncoder implements PasswordEncoder{}
+class Argon2PasswordEncoder implements PasswordEncoder{}
 ----
 
