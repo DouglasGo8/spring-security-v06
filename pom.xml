@@ -69,6 +69,7 @@
     <module>app-service-s02v1</module>
     <module>app-service-s03v1</module>
     <module>app-service-s04v1</module>
+    <module>app-service-s05v1</module>
     <module>webapp-basic-concepts</module>
   </modules>
 
@@ -96,6 +97,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>3.0.1</version>
         <configuration>
           <excludes>
             <exclude>

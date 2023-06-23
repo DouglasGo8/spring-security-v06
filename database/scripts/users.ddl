@@ -28,6 +28,7 @@ insert into users
 values ('admin', 'welcome1', true);
 insert into authorities
 values ('admin', 'admin');
+
 insert into customer4auth(email, pwd, role)
 values ('johndb@mail.com', '12345', 'admin');
 

@@ -10,10 +10,10 @@
     <version>1.0</version>
   </parent>
 
-  <groupId>com.udemy.spring.security.service.session03</groupId>
+  <groupId>com.udemy.spring.security.service.session05</groupId>
   <artifactId>app-service-s04v1</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Spring Security along with JWT, OAUTH2 :: Zero to Master :: Service Session 04</name>
+  <name>Spring Security along with JWT, OAUTH2 :: Zero to Master :: Session 04</name>
 
   <dependencies>
 

@@ -10,15 +10,14 @@
     <version>1.0</version>
   </parent>
 
-  <groupId>com.udemy.spring.security.service.session02</groupId>
-  <artifactId>app-service-s02v1</artifactId>
+  <groupId>com.udemy.spring.security.service.session05</groupId>
+  <artifactId>app-service-s05v1</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Spring Security along with JWT, OAUTH2 :: Zero to Master :: Session 02</name>
+  <name>Spring Security along with JWT, OAUTH2 :: Zero to Master :: Session 05</name>
 
   <dependencies>
 
     <!--
-
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-test</artifactId>
@@ -28,6 +27,33 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
+    <!--
+    <dependency>
+      <groupId>org.springframework.ldap</groupId>
+      <artifactId>spring-ldap-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-ldap</artifactId>
+    </dependency>
+  -->
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
     <dependency>
