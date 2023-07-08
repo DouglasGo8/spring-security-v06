@@ -184,7 +184,7 @@ InMemoryUserDetailsManager
 
 * Hashing is another data conversion to the hash value using hash functions, when data is hashed is non-convertible, one cannot determine the original data from a hash value generated, the match with arbitrary data can be verified whether this data matches based on input and output - https://emn178.github.io/online-tools/sha256.html[Hash sha256]
 
-[source, java]
+[source,java]
 ----
 // DaoAuthenticatorProvider.java
 // additionalAuthenticationChecks...PasswordEncoder
@@ -212,4 +212,9 @@ class BCryptPasswordEncoder implements PasswordEncoder{
 class SCryptPasswordEncoder implements PasswordEncoder{}
 class Argon2PasswordEncoder implements PasswordEncoder{}
 ----
+
+=== CORS & CSRF
+
+. CSRF - cross-site request forgery
+. CORS - cross-origin resource sharing
 

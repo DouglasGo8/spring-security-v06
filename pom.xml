@@ -70,6 +70,7 @@
     <module>app-service-s03v1</module>
     <module>app-service-s04v1</module>
     <module>app-service-s05v1</module>
+    <module>app-service-s06v1</module>
     <module>webapp-basic-concepts</module>
   </modules>
 

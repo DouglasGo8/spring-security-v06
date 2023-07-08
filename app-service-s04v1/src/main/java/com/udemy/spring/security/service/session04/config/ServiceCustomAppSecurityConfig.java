@@ -1,6 +1,6 @@
-package com.udemy.spring.security.service.session04.config;
+package com.udemy.spring.security.service.session05.config;
 
-import com.udemy.spring.security.service.session04.repo.CustomerRepository;
+import com.udemy.spring.security.service.session05.repo.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
