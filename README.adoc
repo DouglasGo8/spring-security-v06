@@ -203,7 +203,7 @@ class StandardPasswordEncoder implements PasswordEncoder{
   // just to support legacy apps
 }
 // not recommended to use in prod
-class Pbkdf2PasswordEncoder implements PasswordEncoder {
+class Pbkdf2PasswordEncoder implements PasswordEncoder{
   //
 }
 class BCryptPasswordEncoder implements PasswordEncoder{
@@ -218,3 +218,22 @@ class Argon2PasswordEncoder implements PasswordEncoder{}
 . CSRF - cross-site request forgery
 . CORS - cross-origin resource sharing
 
+[source,json]
+----
+{
+  "name": "John Doe",
+  "email": "john.doe@mail.com",
+  "mobileNumber": "2233121",
+  "pwd": "welcome1",
+  "role": "user"
+}
+----
+
+=== CORS
+
+. CORS is a protocol that enables scripts running on a browser client to interact with resources from a different origin.
+Other origins means the URL being accessed differs from the location that JS is running
+
+* _@CrossOrigin(origins = "*" or "http://host") in Spring security can be used_, but it is not recommended to put this config in a specific class
+
+* CSRF, cross-site forgery (CSRF or XSRF) attack aims to perform an operation in a web app on behalf of a user without their explicit consent; the best way to avoid this attack is to generate a random token csrf, by default Spring Security block all http operations with error 403, if there is no CSRF solution implemented inside a web app.

@@ -30,8 +30,8 @@ public class LoginController {
     try {
       String hashPwd = passwordEncoder.encode(customer.getPwd());
       customer.setPwd(hashPwd);
-      customer.setCreatedDt(String.valueOf(new Date(System.currentTimeMillis())));
-      savedCustomer = customerRepository.save(customer);
+      customer.setCreatedDt(new Date(System.currentTimeMillis()));
+      savedCustomer = this.customerRepository.save(customer);
       if (savedCustomer.getCustomerId() > 0) {
         response = ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -40,7 +40,7 @@ public class LoginController {
     } catch (Exception ex) {
       response = ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
-              .body("An exception occured due to " + ex.getMessage());
+              .body("An exception occurred due to " + ex.getMessage());
     }
     return response;
   }

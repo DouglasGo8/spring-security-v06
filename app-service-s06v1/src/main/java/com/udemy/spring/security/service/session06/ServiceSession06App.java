@@ -12,9 +12,5 @@ public class ServiceSession06App {
   public static void main(String[] args) {
     SpringApplication.run(ServiceSession06App.class, args);
   }
-
-
-  void foo() {
-    Class.for
-  }
+  
 }

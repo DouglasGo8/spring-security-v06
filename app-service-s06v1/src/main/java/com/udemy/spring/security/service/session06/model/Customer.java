@@ -6,21 +6,27 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.sql.Date;
+
+
 @Getter
 @Setter
 @Entity
-@Table(name = "tblCustomer")
+@Table(name = "tblcustomer")
 public class Customer {
 
   @Id
-  @GenericGenerator(name = "native", strategy = "native")
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+  @Column(name = "customerid")
+  //@GenericGenerator(name = "native", strategy = "native")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long customerId;
   private String name;
   private String email;
+  @Column(name = "mobilenumber")
   private String mobileNumber;
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String pwd;
   private String role;
-  private String createdDt;
+  @Column(name = "createddt")
+  private Date createdDt;
 }
