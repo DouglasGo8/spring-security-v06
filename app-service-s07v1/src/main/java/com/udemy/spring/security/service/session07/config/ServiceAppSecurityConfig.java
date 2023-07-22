@@ -1,6 +1,6 @@
-package com.udemy.spring.security.service.session06.config;
+package com.udemy.spring.security.service.session07.config;
 
-import com.udemy.spring.security.service.session06.filter.CSRFCookieFilter;
+import com.udemy.spring.security.service.session07.filter.CSRFCookieFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +16,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -29,42 +27,38 @@ import java.util.Collections;
 public class ServiceAppSecurityConfig {
 
   @Bean
-  SecurityFilterChain defaultSecurityFilterSecurityChain(HttpSecurity http) throws Exception {
-
-    // ----------------------------------------------------------
+  SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     var requestHandler = new CsrfTokenRequestAttributeHandler();
-    requestHandler.setCsrfRequestAttributeName("_csrf"); //default alias
-    // ---------------------------------------------------------------------
-    http.securityContext().requireExplicitSave(false) // false means JSESSIONID will be responsible to manage this
-            .and().sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
-            .cors().configurationSource(request -> {
-              //
-              var config = new CorsConfiguration();
-              //
-              config.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // ReactJS app address
-              config.setAllowedMethods(Collections.singletonList("*"));
-              config.setAllowCredentials(true);
-              config.setAllowedHeaders(Collections.singletonList("*"));
-              config.setMaxAge(3600L);
-              return config;
-            }).and()
-            //.csrf().ignoringRequestMatchers("/contact", "/register")
-            .csrf((c) -> c.csrfTokenRequestHandler(requestHandler)
-                    .ignoringRequestMatchers("/contact", "/register")
+    requestHandler.setCsrfRequestAttributeName("_csrf");
+    http.securityContext((context) -> context.requireExplicitSave(false))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+            .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+              @Override
+              public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                config.setAllowedMethods(Collections.singletonList("*"));
+                config.setAllowCredentials(true);
+                config.setAllowedHeaders(Collections.singletonList("*"));
+                config.setMaxAge(3600L);
+                return config;
+              }
+            })).csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact", "/register")
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
             .addFilterAfter(new CSRFCookieFilter(), BasicAuthenticationFilter.class)
-            //.and()
-            /*.csrf().disable()*/ // (csrf) => allows PostMapping methods, not recommend to production
-            .authorizeHttpRequests((req) -> req
-                    //.anyRequest().authenticated();
-                    //.anyRequest().denyAll()
-                    .requestMatchers("/myAccount", "/myBalance", "/myLoads", "/myCards").authenticated()
-                    // --------------------------------------------------------
+            .authorizeHttpRequests((requests) -> requests
+                    /*.requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+                    .requestMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
+                    .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                    .requestMatchers("/myCards").hasAuthority("VIEWCARDS")*/
+                    .requestMatchers("/myAccount").hasRole("USER")
+                    .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/myLoans").hasRole("USER")
+                    .requestMatchers("/myCards").hasRole("USER")
+                    .requestMatchers("/user").authenticated()
                     .requestMatchers("/notices", "/contact", "/register").permitAll())
-            // -------------------------------------------------------------------
             .formLogin(Customizer.withDefaults())
             .httpBasic(Customizer.withDefaults());
-    // ---------------------------------------------------------------
     return http.build();
   }
 

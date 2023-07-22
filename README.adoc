@@ -80,6 +80,10 @@ curl -v http://localhost:8080/myAccount -u "johndb@mail.com:12345"
 curl -v http://localhost:8080/greet -H "Authorization: Basic Z3Vlc3Q6d2VsY29tZTE="
 #
 curl -v http://localhost:8080/greet -H "Authorization: Basic am9obmRiQG1haWwuY29tOjEyMzQ1"
+
+# Use this
+curl -v http://localhost:8080/myAccount\?id\=1 -u "happy@example.com:welcome1"
+
 ----
 
 * By default, Spring Security, protects all the paths present inside the web application.
@@ -237,3 +241,53 @@ Other origins means the URL being accessed differs from the location that JS is 
 * _@CrossOrigin(origins = "*" or "http://host") in Spring security can be used_, but it is not recommended to put this config in a specific class
 
 * CSRF, cross-site forgery (CSRF or XSRF) attack aims to perform an operation in a web app on behalf of a user without their explicit consent; the best way to avoid this attack is to generate a random token csrf, by default Spring Security block all http operations with error 403, if there is no CSRF solution implemented inside a web app.
+
+.Authentication & Authorization
+[cols="1,1"]
+|===
+|Authentication |Authorization
+
+|In authentication, the identity of users is checked for providing access to the system
+|In authorization, person's or user's authorities are checked for accessing the resources
+
+|Authentication (AuthN) done before Authorization
+|Authorization (AuthZ) always happens after authentication
+
+|It usually needs user's login details
+|It needs user's privilege or roles
+
+|If authentication fails, usually we will get 401 error response
+|If authorization fails, usually we will get 403 error response
+
+|For a sample as a Bank customer/employee in order to perform actions in the app, we need to prove our identity
+|Once logged into the application, my roles, authorities will decide what kind of actions I can do
+
+|===
+
+=== How Authorities are stored
+
+. Authorities/Roles information is Spring Security is stored inside GrantedAuthority
+
+[source,java]
+----
+interface GrantedAuthority {
+  String getAuthority();
+}
+class SimpleGrantedAuthority implements GrantedAuthority {
+  final String role;
+  String getAuthority() {}
+}
+
+// Authority Control
+  /*.requestMatchers("/myAccount").hasRole("USER")
+                    .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
+                    .requestMatchers("/myLoans").hasRole("USER")
+                    .requestMatchers("/myCards").hasRole("USER")
+                    .requestMatchers("/user").authenticated()*/
+
+----
+
+* ROLE_ is automatically created by Spring
+
+.Spring Security using Role Concept
+image::thumbs/spring_security_hasRole.png[]

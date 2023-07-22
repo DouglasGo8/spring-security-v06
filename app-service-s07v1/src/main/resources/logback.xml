@@ -12,7 +12,7 @@
       </pattern>
     </encoder>
   </appender>
-  <logger name="com.udemy.spring.security.service.session05" level="debug" additivity="false">
+  <logger name="com.udemy.spring.security.service.session07" level="debug" additivity="false">
     <appender-ref ref="STDOUT"/>
   </logger>
   <root level="info">

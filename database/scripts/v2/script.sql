@@ -13,6 +13,36 @@ DROP INDEX IF EXISTS accountNumber_idx;
 DROP INDEX IF EXISTS customer_id_loans_idx;
 DROP INDEX IF EXISTS customer_id_loans_idx;
 --
+CREATE TABLE tblAuthorities
+(
+    id         SERIAL NOT NULL PRIMARY KEY,
+    customerId int    NOT NULL,
+    name       TEXT   NOT NULL,
+    CONSTRAINT authorities_ibfk_1 FOREIGN KEY (customerId) REFERENCES tblCustomer (customerId)
+);
+CREATE INDEX authoritiesCustomerId_idx ON tblAuthorities (customerId);
+--
+INSERT INTO tblAuthorities (customerId, name)
+VALUES (1, 'VIEWACCOUNT');
+
+INSERT INTO tblAuthorities (customerId, name)
+VALUES (1, 'VIEWCARDS');
+
+INSERT INTO tblAuthorities (customerId, name)
+VALUES (1, 'VIEWLOANS');
+
+INSERT INTO tblAuthorities (customerId, name)
+VALUES (1, 'VIEWBALANCE');
+
+DELETE
+FROM tblAuthorities;
+
+INSERT INTO tblAuthorities (customerId, name)
+VALUES (1, 'ROLE_USER');
+
+INSERT INTO tblAuthorities (customerId, name)
+VALUES (1, 'ROLE_ADMIN');
+--
 CREATE TABLE tblCustomer
 (
     customerId   SERIAL NOT NULL PRIMARY KEY,
@@ -28,6 +58,10 @@ CREATE TABLE tblCustomer
 INSERT INTO tblCustomer(name, email, mobileNumber, pwd, role)
 VALUES ('Happy', 'happy@example.com', '22113322', '$2a$12$.86q.fCWEiJT5OZ/lEm9MeGr5xYhJt.L7fyUocxDorFfsI/h401Sq',
         'admin');
+
+INSERT INTO tblCustomer(name, email, mobileNumber, pwd, role)
+VALUES ('John Doe', 'john.doe@example.com', '331241222', '$2a$12$.86q.fCWEiJT5OZ/lEm9MeGr5xYhJt.L7fyUocxDorFfsI/h401Sq',
+        'user');
 --
 SELECT *
 FROM tblCustomer;
