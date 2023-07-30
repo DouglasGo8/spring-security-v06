@@ -13,6 +13,26 @@ DROP INDEX IF EXISTS accountNumber_idx;
 DROP INDEX IF EXISTS customer_id_loans_idx;
 DROP INDEX IF EXISTS customer_id_loans_idx;
 --
+CREATE TABLE tblCustomer
+(
+    customerId   SERIAL NOT NULL PRIMARY KEY,
+    name         TEXT   NOT NULL,
+    email        TEXT   NOT NULL,
+    mobileNumber TEXT   NOT NULL,
+    pwd          TEXT   NOT NULL,
+    role         TEXT   NOT NULL,
+    createdDt    DATE DEFAULT NULL
+);
+--
+-- pwd = welcome1
+INSERT INTO tblCustomer(name, email, mobileNumber, pwd, role)
+VALUES ('Happy', 'happy@example.com', '22113322', '$2a$12$.86q.fCWEiJT5OZ/lEm9MeGr5xYhJt.L7fyUocxDorFfsI/h401Sq',
+        'admin');
+
+INSERT INTO tblCustomer(name, email, mobileNumber, pwd, role)
+VALUES ('John Doe', 'john.doe@example.com', '331241222', '$2a$12$.86q.fCWEiJT5OZ/lEm9MeGr5xYhJt.L7fyUocxDorFfsI/h401Sq',
+        'user');
+--
 CREATE TABLE tblAuthorities
 (
     id         SERIAL NOT NULL PRIMARY KEY,
@@ -42,29 +62,8 @@ VALUES (1, 'ROLE_USER');
 
 INSERT INTO tblAuthorities (customerId, name)
 VALUES (1, 'ROLE_ADMIN');
---
-CREATE TABLE tblCustomer
-(
-    customerId   SERIAL NOT NULL PRIMARY KEY,
-    name         TEXT   NOT NULL,
-    email        TEXT   NOT NULL,
-    mobileNumber TEXT   NOT NULL,
-    pwd          TEXT   NOT NULL,
-    role         TEXT   NOT NULL,
-    createdDt    DATE DEFAULT NULL
-);
---
--- pwd = welcome1
-INSERT INTO tblCustomer(name, email, mobileNumber, pwd, role)
-VALUES ('Happy', 'happy@example.com', '22113322', '$2a$12$.86q.fCWEiJT5OZ/lEm9MeGr5xYhJt.L7fyUocxDorFfsI/h401Sq',
-        'admin');
-
-INSERT INTO tblCustomer(name, email, mobileNumber, pwd, role)
-VALUES ('John Doe', 'john.doe@example.com', '331241222', '$2a$12$.86q.fCWEiJT5OZ/lEm9MeGr5xYhJt.L7fyUocxDorFfsI/h401Sq',
-        'user');
---
-SELECT *
-FROM tblCustomer;
+--SELECT *
+--FROM tblCustomer;
 --
 CREATE TABLE tblAccounts
 (

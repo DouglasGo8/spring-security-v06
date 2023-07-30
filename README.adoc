@@ -2,6 +2,8 @@
 
 == Links
 
+- https://jwt.io/[JWT.io]
+- https://mkjwk.org/[JSON WebToken generator]
 - https://github.com/eazybytes/springsecurity6[Spring Security Training GitHub]
 
 - https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.security[Common Security Application Properties]
@@ -287,7 +289,69 @@ class SimpleGrantedAuthority implements GrantedAuthority {
 
 ----
 
-* ROLE_ is automatically created by Spring
+* ROLE_ is automatically provisioned by Spring
 
 .Spring Security using Role Concept
 image::thumbs/spring_security_hasRole.png[]
+
+=== Servlets & Filters
+
+* Filters inside Java web apps can be used to intercept each request/response and do some pre work before our business logic.
+* We can use housekeeping activities during the authentication and authorization flow
+** Input validation
+** Tracing, Auditing and reporting
+** Logging of input like IP Address etc.
+** Encryption and Decryption
+** Multi factor authentication using OTP
+** _ServletRequest_ can be used to retrieve details about the request
+** _ServletResponse_ can be used to modify the response before sending it back to a client
+** _FilterChain_ represents a collection of filters with a defined order in which they can act, we can use _FilterChain_ object to forward the request to the next filter in the chain.
+
+[source,java]
+----
+// NOT RECOMMENDED TO PRODUCTION
+// Enable the debugging of security details
+@EnableWebSecurity(debug=true)
+class MySecurityFilter {}
+// or properties
+//logging.level.org.springframework.security.web.FilterChainProxy=DEBUG
+----
+
+=== Token-based Authentication with JWT
+
+* _JSESSIONID_ tokens have some disadvantages such they haven't your custom metadata, they're stored inside your browser tied in a cookie
+
+* Roles of Token: tokens can be a plain string with an uuid, or it can usually be of type JSON Web Token _(JWT)_ that get generated when the user is authenticated for the first time, every request to a restricted resource, the client needs to send the access token in the query string or Authorization header, the server then validates the token and, if it's valid, return the secure resource to the client
+
+* Tokens help us to not share the credentials for every request
+* Tokens can be invalidated during any suspicious activities w
+* Tokens can be created with a short lifespan
+* Tokens can be used to store user-related information like roles/authorities
+* Tokens can keep re-usability over multiple platforms and domains
+* Stateless and easier to scale
+* JWT tokens have 3 parts (header, payload, signature) each one separated by a dot (.), bellow a jwt sample
+** header stores metadata/info related to the token, such algorithm that generates the signature
+** payload stores details related to user, roles etc, which can be used later for AuthN and AuthZ, we always try to keep the jwt light as possible
+** signature is an optional part, but if when you share the JWT in an internal scenario, when you trust in caller, never in an open web, this is the guarantee that no one tampered our token
+** Sample of signature can be using, e.g; HMAC SHA256 algorithm, is #_HMACHSA246(base64UrlEncoded(header) + "." + base64UrlEncoded(payload), secret)_#, the signature is used to verify the message wasn't changed along the way, in the case of tokens signed with a private key, it can also to be verified that the sender os the jwt is who it says it is;
+
+[source,html]
+----
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+----
+
+.JWT decoded sample
+image::thumbs/decoded_jwt.png[]
+
+.JSON Web token key generator sample in OCT Mode with a 1024 Key Size
+[source,json]
+----
+{
+    "kty": "oct",
+    "use": "sig",
+    "kid": "vzSdiIvN_b1wiPVxeEhf6USAwd3aBZujy0x6e-Zmxhc",
+    "k": "7UbSQjD9Aq97pU0ieIMVTWWYsKdWNvfOkw-DJRcYfr13xhiH327nkVRkYM4uiPr_viKXsHW66etV5NQhpbFzU7fKssjOhNFN2imAyineny-GTS81xxwm1WkUsZibWuJ2L8qwmstyNewkn4YA9Za38tq0b3jceCogaWOH1Ztg27w",
+    "alg": "HS256"
+}
+----
+
