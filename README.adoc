@@ -3,9 +3,9 @@
 == Links
 
 - https://jwt.io/[JWT.io]
+- https://www.oauth.com/playground/[OAuth Playground]
 - https://mkjwk.org/[JSON WebToken generator]
 - https://github.com/eazybytes/springsecurity6[Spring Security Training GitHub]
-
 - https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.security[Common Security Application Properties]
 
 == Important Notes
@@ -355,3 +355,121 @@ image::thumbs/decoded_jwt.png[]
 }
 ----
 
+=== Method Level Security
+
+* Method level security allows to apply the authorization rules any layer of an application like in service layer or repository layer, it can be enabled by _@EnableWebMethodSecurity_
+
+* We can use method level security will also help authorization rules even in the non-web apps where we will not have any endpoints, they are classified as
+
+. Invocation authorization
+. Filtering authorization
+
+[source,java]
+----
+@Service
+class MyProtectedResource {
+  @PreAuthorize("hasAuthority('VIEWPOJO')")
+  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+  @PreAuthorize("# username == authentication.principal.username")
+  @PostAuthorize("returnObject.username == authentication.principal.username")
+  @PostAuthorize("hasPermission(returnObject, 'ADMIN'")
+  public MyPojo getPojo(String param) {
+    return param;
+  }
+}
+----
+
+=== OAUTH 2
+
+* In enterprise apps, security concerns must be live in a separated component
+
+* Temporary Token loaded with permissions is provided based on credentials
+
+.OAuth2 Flow
+image::thumbs/oauth2flow.png[]
+
+* Steps 2 & 3, where a client is making a request to Auth Server
+
+. _client_id_: the id which identifies the client app by the *Auth Server*, this will be grated when the client registers first time with auth server
+. _redirect_uri_: the URI value which the _auth server_ needs to redirect post successful authentication
+. _scope_: similar to authorities, specifies level of access that client is request
+. _state_: CSRF token value to protected from CSRF attacks
+. _response_type_: with the value 'code' which indicates that we want to follow authorization code grant
+
+* Step 5 where a client received an authorization code from auth server
+
+. _code_: the authorization code received from the above steps
+. _client_id & client_secret_: the client credentials which are registered with the auth server
+. _grant_type_: with the value 'authorization_code' which identifies the kind of grant type is used
+
+* Some auth flows
+
+. Authorization Code
+. PKCE
+. Client Credentials
+. Device Code
+. Refresh Token
+. Implicit Flow (Legacy isn't recommended for production)
+. Password Grant (Legacy isn't recommended for product)
+
+* OpenID Connect is a protocol that sits on top of OAuth 2.0 framework OAuth 2.0 provides authorization via an access token containing scopes, OpenID Connect provides authentication by introducing a new ID which contains a new set of information and claims spec for identity
+
+****
+
+
+.Git Repo OAuth2 Sample
+[source,xml]
+----
+<depencencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+</depencencies>
+----
+
+.Spring Boot OAuth2 Git Identity Server
+[source,java]
+----
+
+@Controller
+class MySecureController {
+  @GetMapping("/")
+  String main(OAuth2AuthenticationToken token) {
+    log.info("{}", token.getPrincipal());
+    return "index.html";
+  }
+}
+
+@Configuration
+class MySecureConfig {
+
+  @Bean
+  SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
+    http.authorizeRequests().anyRequest().authenticated()
+      .and()
+      .oauth2Login();
+  }
+
+  @Bean
+  ClientRegistrationRepository clientRepository() {
+    return new InMemoryClientRegistrationRepository(clientRegistration());
+  }
+
+  // can be configured in application.properties
+  // spring.security.oauth2.client.registration.github.client-end=8cf67ab394dc
+  ClientRegistration clientRegistration() {
+    return CommonOAuth2Provider.GITHUB.getBuilder("github")
+      .clientId("clientIdCode")
+      .clientSecret("clientSecretCode")
+      .build();
+  }
+
+}
+----
+****

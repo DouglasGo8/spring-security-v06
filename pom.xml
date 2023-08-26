@@ -74,6 +74,7 @@
     <module>app-service-s07v1</module>
     <module>app-service-s08v1</module>
     <module>app-service-s09v1</module>
+    <module>app-service-s10v1</module>
     <module>webapp-basic-concepts</module>
   </modules>
 
