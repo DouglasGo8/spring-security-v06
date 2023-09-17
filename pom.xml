@@ -64,7 +64,6 @@
     </dependency>
   </dependencies>
 
-
   <modules>
     <module>app-service-s02v1</module>
     <module>app-service-s03v1</module>
@@ -75,6 +74,7 @@
     <module>app-service-s08v1</module>
     <module>app-service-s09v1</module>
     <module>app-service-s10v1</module>
+    <module>app-service-s11v1</module>
     <module>webapp-basic-concepts</module>
   </modules>
 

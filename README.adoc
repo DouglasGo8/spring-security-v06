@@ -473,3 +473,101 @@ class MySecureConfig {
 }
 ----
 ****
+
+=== OAUTH2 and KeyCloak
+
+.OAuth2 KeyCloak Flow
+image::thumbs/authserver-flow.png[]
+
+* A client app needs access protected server resources they need to get an access token from _Auth Servers_, once the access token is received from Auth Server, the client app will connect on resource server along with the token, the resource server will connect with auth server to know the validity of the access token and if it is valid, the resource server will enable it to the client app
+
+.KeyCloak Docker version
+[source,bash]
+----
+docker run -d -p 8086:8080 --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:22.0.3 start-dev
+----
+
+* Ream is a space to organizer own users, roles and clients, they are always in a boundary, different environments must have different credentials
+
+.OAuth2 KeyCloak basic flow
+image::thumbs/oauth-keycloak-basic-flow.png[]
+
+
+image::thumbs/clientid-conf.png[]
+
+* On the image up above, we're disabling the standard flow because it is a standard OpenID Connect redirect based authentication with authorization code.
+In terms of OpenID Connect or OAuth2 specifications, this enables support of 'Authorization Code Flow' for this client.
+
+.Identity Server URL Configurations Info
+[source,html]
+----
+http://localhost:8086/realms/springsecuritydev/.well-known/openid-configuration
+----
+
+.Postman GET Keycloak Conf URLS
+image::thumbs/keycloak-auth-urlsconf-info.png[]
+
+
+.OAuth Keycloak Tokens
+image::thumbs/oauth-keycloak-tokens.png[]
+
+.JWT Decoded info
+image::thumbs/jwt_decoded_info.png[]
+
+
+.OAuth Authorization Code Grant Type Flow
+image::thumbs/oauth-keycloak-auth-grant-type.png[]
+
+.OAuth Grant Type Redirect Url Config
+image::thumbs/oauth_grant-type-redirect-url.png[]
+
+
+.Grant Type Flow URI Login Auth Server
+image::thumbs/grant_type_login_uri-login-oauth-server.png[]
+
+.Mock Uri Application with Code Info to Extract
+[source,html]
+----
+http://localhost:7080/sample?state=thestate&session_state=297ab08a-fc26-4a60-9ff8-777b19c3a5c7&code=8737dc0e-ab4d-4ef3-9b80-d219beb8d1a9.297ab08a-fc26-4a60-9ff8-777b19c3a5c7.28da389a-7115-4831-b1da-6435156758ad
+----
+
+.OAuth Auth Server GrantType Authorization_Code and Redirect URL Code Flow (authorization code will expire)
+image::thumbs/OAuth_AuthServer_GrantTypeFlow_Autorization_Code.png[]
+
+.JWT Grant Type Authorization Code Decoded
+image::thumbs/jwt_granttype_flow_info.png[]
+
+* Access token will not be more valid in this scenario, if the user does not have roles, as demonstrated down bellow
+
+.User with Roles on GrantType Flow
+image::thumbs/oauth_granttype_flow-user-withroles.png[]
+
+=== OAuth2 Auth Code Flow with proof for code exchange (PKCE)
+
+* When public clients (e.g native or spa apps) request access tokens, some additional security concerns are posed that are not mitigated, by the AuthZ Code Flow alone, is because clients cannot securely store a Client Secret, but with #*_PKCE-enhanced_*# Authorization Code follow the steps:
+
+. Once user clicks login, client app creates a cryptographically random code_verifier add from this generates a code_challenge
+. Code challenge is a Base64-URL-encoded string of SHA256 hash of the code verifier, that redirects the user to the Authorization Server along with de code_challenge
+. Authorization Server stores the code_challenge and redirects the user back to the application with an authorization code, which is good for one use
+. Client App sends the authorization code and the code_verifier (create in step 1) to the authorization server
+. Authorization server verifies the code_challenge and code_verifier, if it is valid it responds with ID Token and Access Token (and optionally a Refresh token)
+
+.OAuth PKCE Flow
+image::thumbs/pkce_playground.png[]
+
+.Keycloak PKCE Config Screen
+image::thumbs/keycloak_pkce_screen.png[]
+
+
+.OAuth Code Verifier and Challenger PKCE Generation
+image::thumbs/pkce_code_verifier_challenge_generator.png[]
+
+.Sample URL Auth with Challenge and Verifier Code
+[source,html]
+----
+https://authorization-server.com/authorize?response_type=code&client_id=xxx&rediret_uri=https://www.oauth.com/playground/&scope=phot+offline_access&state=xsttxx&code_challenge=xxxas3912&code_challenge_method=S256
+----
+
+
+
+
