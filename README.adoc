@@ -550,14 +550,13 @@ image::thumbs/oauth_granttype_flow-user-withroles.png[]
 . Code challenge is a Base64-URL-encoded string of SHA256 hash of the code verifier, that redirects the user to the Authorization Server along with de code_challenge
 . Authorization Server stores the code_challenge and redirects the user back to the application with an authorization code, which is good for one use
 . Client App sends the authorization code and the code_verifier (create in step 1) to the authorization server
-. Authorization server verifies the code_challenge and code_verifier, if it is valid it responds with ID Token and Access Token (and optionally a Refresh token)
+. Authorization server verifies the code_challenge and _code_verifier_, if it is valid it responds with ID Token and Access Token (and optionally a Refresh token)
 
 .OAuth PKCE Flow
 image::thumbs/pkce_playground.png[]
 
 .Keycloak PKCE Config Screen
 image::thumbs/keycloak_pkce_screen.png[]
-
 
 .OAuth Code Verifier and Challenger PKCE Generation
 image::thumbs/pkce_code_verifier_challenge_generator.png[]

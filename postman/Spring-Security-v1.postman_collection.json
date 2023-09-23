@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "3e8359ec-8206-4fd2-a8d8-fd621f04cbc2",
+		"name": "Spring-Security-v1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "195866"
+	},
+	"item": [
+		{
+			"name": "Register User :: DEPRECATED",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@mail.com\",\n    \"mobileNumber\": \"2233121\",\n    \"pwd\": \"welcome1\",\n    \"role\": \"user\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Notices",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXM3A3TVROLUJjVS10QVFCV004dkdQXzdlcG9MaVd4OExTdW1zN09TWTlvIn0.eyJleHAiOjE2OTQ5MTgzMjQsImlhdCI6MTY5NDkxODAyNCwianRpIjoiMTA1MzlhODMtYTBlNC00OTA4LTk2N2MtY2NlMzVkODE5Yzk0IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg2L3JlYWxtcy9zcHJpbmdzZWN1cml0eWRldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlODAwNmZjMC0xOTdkLTQxYmUtOTlmOS0xZDU4YmZjNTA4ZmIiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJzcHJpbmdzZWN1cml0eWFwaXMiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtc3ByaW5nc2VjdXJpdHlkZXYiLCJ1bWFfYXV0aG9yaXphdGlvbiIsIkFETUlOIiwiVVNFUiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIGFkZHJlc3MgcHJvZmlsZSIsImFkZHJlc3MiOnt9LCJjbGllbnRIb3N0IjoiMTcyLjE3LjAuMSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LXNwcmluZ3NlY3VyaXR5YXBpcyIsImNsaWVudEFkZHJlc3MiOiIxNzIuMTcuMC4xIiwiY2xpZW50X2lkIjoic3ByaW5nc2VjdXJpdHlhcGlzIn0.c8bmUh57KFe4EzvRTGMgMRv3j9qRZHUd2c9dxEh1m-idEXAhdVYfjnFUZDqi2pydKptIDzWpwNzxdr0O4j0KMYpVUvkpy9nSuB9Or4eZG8DCXnHQAN8JyNzrcGF73V3mHqb_MuBoiYvWDZPQA-AvWvtS4-I8aw7E30iS5BfycmbUPFk0RgPRzJSOw0rrxkQNVQOow3vUFQp6OYzrNl5rwhucQEkDcGLuY9O4NgFuNiRkBf7Y1h1FxdI5306NdGQlPX5AqolQWWe7UJgj_3XtXhRSuCJ460FEEAjdKFFlA5a-t6aHu0hCKIdzZtXU4pgn6Fi60zODwDRPrjAPrDVtFQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/myAccount?email=happy@example.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"myAccount"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "happy@example.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "KeyCloakOpenIdURIsConf",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8086/realms/springsecuritydev/.well-known/openid-configuration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"realms",
+						"springsecuritydev",
+						".well-known",
+						"openid-configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "KeyCloakOpenIdTokenEndpoint",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "springsecurityapis",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "qfnyp1HGc4RLrvBQPKQmnryhynemB8sl",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid email profile address",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8086/realms/springsecuritydev/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"realms",
+						"springsecuritydev",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Balance",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXM3A3TVROLUJjVS10QVFCV004dkdQXzdlcG9MaVd4OExTdW1zN09TWTlvIn0.eyJleHAiOjE2OTQ5MjIwMjgsImlhdCI6MTY5NDkyMTcyOCwiYXV0aF90aW1lIjoxNjk0OTIwODI4LCJqdGkiOiJhNTRjZGVhNC03Mzg3LTQ4OTAtYWNiNi1jZmQzOWEyZDI0NmEiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODYvcmVhbG1zL3NwcmluZ3NlY3VyaXR5ZGV2IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjY2ODcwNjIxLTIxNjktNGQ3Ny1hN2UzLWJlZGVmZDJmZDE0NiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImZyb250X2FwcF9jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiMjk3YWIwOGEtZmMyNi00YTYwLTlmZjgtNzc3YjE5YzNhNWM3IiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXNwcmluZ3NlY3VyaXR5ZGV2IiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiMjk3YWIwOGEtZmMyNi00YTYwLTlmZjgtNzc3YjE5YzNhNWM3IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJIYXBweSBFeGFtcGxlIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiaGFwcHlAZXhhbXBsZS5jb20iLCJnaXZlbl9uYW1lIjoiSGFwcHkiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJlbWFpbCI6ImhhcHB5QGV4YW1wbGUuY29tIn0.KSptWUmhbfFboMi_jfrq7Ann9M1K7x60KmoKnZ_KHuwkcpOZ5DtiK1qwgGUG1d9_b6FzlLZyCho3NYlaUNDqidVd2EuI0la_qW1FfaQXNSgDFH-gRG_Ozk5_XjmWtDsHptslcgUHj6ULSHCwaJIFhOKE5mPH-ABPrF3rR_yceDFRuzJx4KTCm2sIOE01WaX9RnmwB7v7gdoVvwcHiueffVJlSKtLraxvr0W5jF0YDUvfUM-1ilDez2k-R3fjSjXU7K-qa4xKZu0skwAcMrdvn56Ti50o5knX78Hv6Z47mn65AoNx49qjI0DfPIH2AXUULV3J2NLbP--4It8ttu14Gw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/myBalance?email=happy@example.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"myBalance"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "happy@example.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GrantTypeFlowServerAuthToGenerateCode",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8086/realms/springsecuritydev/protocol/openid-connect/auth?client_id=front_app_client&response_type=code&scope=openid&redirect_uri=http://localhost:7080/sample&state=thestate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"realms",
+						"springsecuritydev",
+						"protocol",
+						"openid-connect",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "front_app_client"
+						},
+						{
+							"key": "response_type",
+							"value": "code"
+						},
+						{
+							"key": "scope",
+							"value": "openid"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:7080/sample"
+						},
+						{
+							"key": "state",
+							"value": "thestate"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "KeyCloakOpenIdGrantFlowTokenEndpoint",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "front_app_client",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "ZDr11fZQcSlZ9pkFThRVDxTU8LPLX5hz",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "42002928-f652-46e7-9616-79012fd54fb5.297ab08a-fc26-4a60-9ff8-777b19c3a5c7.28da389a-7115-4831-b1da-6435156758ad",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:7080/sample",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8086/realms/springsecuritydev/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"realms",
+						"springsecuritydev",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
